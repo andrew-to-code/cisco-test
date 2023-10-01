@@ -1,11 +1,35 @@
 ---
 - hosts: ios
   gather_facts: no
+# <<<<<<< Tower
+  connection: local
+
+  tasks:
+  - name: OBTAIN LOGIN CREDENTIALS
+    include_vars: secrets.yaml
+
+  - name: DEFINE PROVIDER
+    set_fact:
+      provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ creds['username'] }}"
+        password: "{{ creds['password'] }}"
+        auth_pass: "{{ creds['auth_pass'] }}"
+        transport: cli
+
+
+- name: "create a diff"
+    napalm_install_config:
+      hostname: "{{ inventory_hostname }}"
+      username: "{{ creds['username'] }}"
+      password: "{{ creds['password'] }}"
+=======
 
   tasks:
 
 - name: "create a diff"
     napalm_install_config:
+# >>>>>>> master
       dev_os: "ios"
       config_file: initial.conf
       commit_changes: false

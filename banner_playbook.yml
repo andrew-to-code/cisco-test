@@ -1,14 +1,12 @@
-#<<<<<<< Tower
-
 ---
 - hosts: ios
   gather_facts: no
   connection: local
- 
+
   tasks:
   - name: OBTAIN LOGIN CREDENTIALS
     include_vars: secrets.yaml
- 
+
   - name: DEFINE PROVIDER
     set_fact:
       provider:
@@ -16,47 +14,30 @@
         username: "{{ creds['username'] }}"
         password: "{{ creds['password'] }}"
         auth_pass: "{{ creds['auth_pass'] }}"
- 
-  - name: SHOW VTP STATUS
-    ios_command:
-      provider: "{{ provider }}"
-      authorize: yes
-      commands:
-        - show vtp status
-    register: before_vtp
- 
-  - debug: var=before_vtp.stdout_lines
- 
-  - name: CHANGE VTP MODE
-    ios_config:
-      provider: "{{ provider }}"
-      authorize: yes
-      lines:
-        - vtp mode transparent
-      
- 
-  - name: SHOW VTP STATUS
-    ios_command:
-      provider: "{{ provider }}"
-      authorize: yes
-=======
----
-- hosts: ios
-  gather_facts: no
 
- 
-  tasks: 
-  
-  - name: CHANGE VTP MODE
-    ios_config:
-      lines:
-        - vtp mode transparent
-      
-  - name: SHOW VTP STATUS
+  - name: SHOW RUN | BEG BANNER
     ios_command:
-#>>>>>>> master
+      provider: "{{ provider }}"
+      authorize: yes
       commands:
-        - show vtp status 
-    register: after_vtp
- 
-  - debug: var=after_vtp.stdout_lines
+        - show run | beg banner
+    register: banner
+
+  - debug: var=banner.stdout_lines
+
+  - name: CREATE NEW BANNER
+    ios_config:
+      provider: "{{ provider }}"
+      authorize: yes
+      lines:
+        - banner motd ^Welcome to the 2 day CCNA boot camp^
+
+  - name: SHOW RUN | BEG BANNER
+    ios_command:
+      provider: "{{ provider }}"
+      authorize: yes
+      commands:
+        - show run | beg banner
+    register: banner
+
+  - debug: var=banner.stdout_lines

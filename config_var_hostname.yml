@@ -1,4 +1,3 @@
-#<<<<<<< Tower
 
 ---
 - hosts: ios
@@ -17,46 +16,30 @@
         password: "{{ creds['password'] }}"
         auth_pass: "{{ creds['auth_pass'] }}"
  
-  - name: SHOW VTP STATUS
+  - name: RUN 'SHOW RUN'
     ios_command:
       provider: "{{ provider }}"
       authorize: yes
       commands:
-        - show vtp status
-    register: before_vtp
+        - show run 
+    register: before_base
  
-  - debug: var=before_vtp.stdout_lines
+  - debug: var=before_base.stdout_lines
  
-  - name: CHANGE VTP MODE
-    ios_config:
-      provider: "{{ provider }}"
-      authorize: yes
-      lines:
-        - vtp mode transparent
-      
- 
-  - name: SHOW VTP STATUS
-    ios_command:
-      provider: "{{ provider }}"
-      authorize: yes
-=======
----
-- hosts: ios
-  gather_facts: no
-
- 
-  tasks: 
   
-  - name: CHANGE VTP MODE
+  - name: ASSIGN HOSTNAME
     ios_config:
-      lines:
-        - vtp mode transparent
-      
-  - name: SHOW VTP STATUS
-    ios_command:
-#>>>>>>> master
-      commands:
-        - show vtp status 
-    register: after_vtp
+      provider: "{{ provider }}"
+      authorize: yes
+      lines: ['hostname {{ new_hostname }}'] 
+      force: yes
  
-  - debug: var=after_vtp.stdout_lines
+  - name: RUN 'SHOW RUN'
+    ios_command:
+      provider: "{{ provider }}"
+      authorize: yes
+      commands:
+        - show run 
+    register: after_base
+ 
+  - debug: var=after_base.stdout_lines
