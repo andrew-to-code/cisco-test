@@ -1,3 +1,4 @@
+#<<<<<<< Tower
 
 ---
 - hosts: ios
@@ -41,4 +42,24 @@
         - show run | beg banner 
     register: banner
  
+=======
+---
+- hosts: ios
+  gather_facts: no
+
+  tasks:
+
+  - name: CONFIGURE BANNER ON CISCO DEVICES
+    ios_banner:
+      banner: login
+      text: "{{ lookup('file', './vars/raw_banner.cfg') }}"
+      state: present
+
+  - name: SHOW RUN | BEG BANNER 
+    ios_command:
+      commands:
+        - show run | beg HODL
+    register: banner
+
+# >>>>>>> master
   - debug: var=banner.stdout_lines

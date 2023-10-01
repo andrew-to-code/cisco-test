@@ -8,11 +8,15 @@
 #+ no cdp run
 #+ transport input ssh
 #+ logging buffered 15000
+#<<<<<<< Tower
 #+ service password-encryption
+=======
+#>>>>>>> master
 
 
 - hosts: ios
   gather_facts: no
+#<<<<<<< Tower
   connection: local
 
   tasks:
@@ -48,11 +52,25 @@
     ios_config:
       provider: "{{ provider }}"
       authorize: yes
+=======
+
+
+  tasks:
+ 
+  - name: NO SERVICE PAD 
+    ios_config:
+      lines:
+        - no service pad
+
+  - name: IP SSH VERSION 2 
+    ios_config:
+#>>>>>>> master
       lines:
         - ip ssh version 2
 
   - name: NO IP DOMAIN-LOOKUP
     ios_config:
+#<<<<<<< Tower
       provider: "{{ provider }}"
       authorize: yes
       lines:
@@ -62,12 +80,20 @@
     ios_config:
       provider: "{{ provider }}"
       authorize: yes
+=======
+      lines:
+        - no ip domain-lookup
+
+  - name: DISABLE HTTP/HTTPS MANAGMENT 
+    ios_config:
+#>>>>>>> master
       lines:
         - no ip http server
         - no ip http secure-server
 
   - name: DISABLE CDP 
     ios_config:
+#<<<<<<< Tower
       provider: "{{ provider }}"
       authorize: yes
       lines:
@@ -77,10 +103,18 @@
     ios_config:
       provider: "{{ provider }}"
       authorize: yes
+=======
+      lines:
+        - no cdp run
+
+  - name: TRANSPORT INPUT SSH 
+    ios_config:
+#>>>>>>> master
       lines:
         - line vty 0 15
         - transport input ssh
 
+#<<<<<<< Tower
   - name: LOGGING BUFFERED 15000
     ios_config:
       provider: "{{ provider }}"
@@ -104,3 +138,11 @@
     register: after_vty
  
   - debug: var=after_vty.stdout_lines
+=======
+  - name: LOGGING BUFFERED 15000 
+    ios_config:
+      lines:
+        - logging buffered 15000
+        
+
+#>>>>>>> master

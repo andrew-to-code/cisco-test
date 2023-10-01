@@ -1,3 +1,4 @@
+#<<<<<<< Tower
 
 ---
 - hosts: ios
@@ -38,6 +39,22 @@
     ios_command:
       provider: "{{ provider }}"
       authorize: yes
+=======
+---
+- hosts: ios
+  gather_facts: no
+
+ 
+  tasks: 
+  
+  - name: CHANGE VTP MODE
+    ios_config:
+      lines:
+        - vtp mode transparent
+      
+  - name: SHOW VTP STATUS
+    ios_command:
+#>>>>>>> master
       commands:
         - show vtp status 
     register: after_vtp

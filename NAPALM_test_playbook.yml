@@ -1,6 +1,7 @@
 ---
 - hosts: ios
   gather_facts: no
+# <<<<<<< Tower
   connection: local
 
   tasks:
@@ -22,6 +23,13 @@
       hostname: "{{ inventory_hostname }}"
       username: "{{ creds['username'] }}"
       password: "{{ creds['password'] }}"
+=======
+
+  tasks:
+
+- name: "create a diff"
+    napalm_install_config:
+# >>>>>>> master
       dev_os: "ios"
       config_file: initial.conf
       commit_changes: false
